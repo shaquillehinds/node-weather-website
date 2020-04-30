@@ -1,10 +1,13 @@
 const path = require("path");
 const express = require("express");
 const hbs = require("hbs");
+const dotenv = require("dotenv");
 const forecast = require("./utils/forecast");
 const geocode = require("./utils/geocode");
 
 const app = express();
+
+dotenv.config();
 
 // Define paths for Express config
 const publicDirPath = path.join(__dirname, "../public");
