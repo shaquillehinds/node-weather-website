@@ -44,6 +44,18 @@ app.get("/help", (req, res) => {
   });
 });
 
+app.get("/myweather", (req, res) => {
+  const lat = req.query.latitude;
+  const long = req.query.longitude;
+  forecast(lat, long, (error, data) => {
+    if (error) {
+      res.status(500).send(error);
+    } else {
+      res.send({ location: data.location, summary: data.summary() });
+    }
+  });
+});
+
 app.get("/weather", (req, res) => {
   if (!req.query.address) {
     return res.send({

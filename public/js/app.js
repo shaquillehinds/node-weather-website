@@ -1,6 +1,7 @@
 const weatherForm = document.querySelector("form");
 const messageOne = document.querySelector("#message-1");
 const messageTwo = document.querySelector("#message-2");
+const currentLocationWeather = document.querySelector("#current-location");
 
 weatherForm.addEventListener("submit", (e) => {
   e.preventDefault();
@@ -21,3 +22,19 @@ weatherForm.addEventListener("submit", (e) => {
     messageOne.textContent = "Please enter a location";
   }
 });
+const getPosition = async () => {
+  if (!navigator.geolocation) {
+    alert("Geolocation is not supported by your browser");
+  } else {
+    messageOne.textContent = "Loading results...";
+    navigator.geolocation.getCurrentPosition(async (res) => {
+      const json = await fetch(
+        `/myweather?latitude=${res.coords.latitude}&longitude=${res.coords.longitude}`
+      );
+      const data = await json.json();
+      messageOne.textContent = `${data.location}`;
+      messageTwo.textContent = `${data.summary}`;
+    });
+  }
+};
+currentLocationWeather.addEventListener("click", () => getPosition());
